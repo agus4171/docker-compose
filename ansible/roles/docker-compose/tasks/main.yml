@@ -1,0 +1,28 @@
+---
+# tasks file for docker-compose
+
+- name: Create compose-file dir
+  file: path=/opt/{{ item }} state=directory
+  with_items:
+    - compose-file
+    - app
+    - nginx
+
+- name: Copy app file
+  template: src={{ item.name }}.j2 dest=/opt/{{ item.name }}/{{ item.name }}.{{ item.file}}
+  with_items:
+    - { name: app, file: js }
+    - { name: nginx, file: conf }
+
+- name: Copy app Dockerfile
+  copy: src=app/Dockerfile dest=/opt/app
+
+- name: Copy docker-compose.yml to server
+  copy: src=node-app.yml dest="/opt/compose-file/node-app.yml"
+#  with_items: "{{ docker_compose | default([]) }}"
+
+- name: Running compose-file on server
+  shell: "docker-compose -f node-app.yml up -d"
+  args:
+    chdir: "/opt/compose-file"
+#  with_items: "{{ docker_compose | default([]) }}"

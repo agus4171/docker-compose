@@ -1,0 +1,10 @@
+---
+# tasks file for users
+- name: Create users on server
+  user: name={{ username }} groups={{ group }} ssh_key_file =/home/{{ username }}/.ssh/id_rsa shell=/bin/bash home=/home/{{ username }} update_password=on_create password={{ username | password_hash('sha512') }}
+
+- name: Enabling key based access for the users
+  authorized_key: user={{ username }} key={{ lookup('file', key_file) }} state=present
+
+- name: Copy group file for staff
+  template: src=staff.j2 dest=/etc/sudoers.d/staff mode=0440

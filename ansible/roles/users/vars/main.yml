@@ -1,0 +1,5 @@
+---
+# vars file for users
+username: kurio
+group: staff
+key_file: ~/.ssh/id_rsa.pub

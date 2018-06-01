@@ -1,0 +1,11 @@
+- name: Setup node app
+  hosts: node-app
+  remote_user: ubuntu
+  sudo: yes
+#  become: true
+#  become_user: root
+
+  roles: 
+    - docker
+    - { role: users, tags: ["users"] }
+    - { role: docker-compose, tags: ["docker-compose"] }

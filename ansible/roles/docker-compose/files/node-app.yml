@@ -1,0 +1,15 @@
+version: '3.2'
+services:
+  web:
+    build: /opt/app 
+    container_name: web
+    volumes:
+      - /opt/app:/usr/src/app
+   
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    volumes:
+      - /opt/nginx:/etc/nginx
+    ports:
+      - 80:8080
